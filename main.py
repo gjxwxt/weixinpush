@@ -126,7 +126,7 @@ def get_lucky():
     luck_text = r.json()["summary"]
     return luck_col, luck_text
 
-def send_message(to_user, access_token, region_name, weather, temp, wind_dir, note_ch, note_en):
+def send_message(to_user, access_token, region_name, weather, temp, wind_dir, note_ch, note_en, luck_col, luck_text):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
     year = localtime().tm_year
@@ -182,6 +182,14 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
             },
             "note_ch": {
                 "value": note_ch,
+                "color": get_color()
+            },
+            "luck_col":{
+                "value": luck_col,
+                "color": get_color()
+            },
+            "luck_text":{
+                "value": luck_text,
                 "color": get_color()
             }
         }
