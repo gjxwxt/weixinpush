@@ -114,7 +114,18 @@ def get_ciba():
     note_ch = r.json()["note"]
     return note_ch, note_en
  
- 
+def get_lucky():
+    url = "http://web.juhe.cn/constellation/getAll?consName=双子座&type=today&key=1b9eb36af2f3b2f2694ad7d69d69d048"
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    }
+    r = get(url, headers=headers)
+    luck_col = r.json()["color"]
+    luck_text = r.json()["summary"]
+    return luck_col, luck_text
+
 def send_message(to_user, access_token, region_name, weather, temp, wind_dir, note_ch, note_en):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
@@ -228,6 +239,7 @@ if __name__ == "__main__":
         # 获取词霸每日金句
         note_ch, note_en = get_ciba()
     # 公众号推送消息
+    luck_col, luck_text = get_lucky()
     for user in users:
-        send_message(user, accessToken, region, weather, temp, wind_dir, note_ch, note_en)
+        send_message(user, accessToken, region, weather, temp, wind_dir, note_ch, note_en, luck_col, luck_text)
     os.system("pause")
